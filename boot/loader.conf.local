@@ -1,0 +1,18 @@
+# per /usr/ports/www/firefox/pkg-descr
+sem_load="YES"
+kern.maxusers="512"
+accf_http_load="YES"
+coretemp_load="YES"
+amdtemp_load="YES"
+#
+ipfw_load="YES"
+#
+#sysctl net.inet.tcp.cc.available
+#sysctl net.inet.tcp.cc.algorithm=htcp
+cc_cubic_load="YES"
+cc_htcp_load="YES"
+cc_hd_load="YES"
+cc_chd_load="YES"
+#
+kern.vty=vt
+

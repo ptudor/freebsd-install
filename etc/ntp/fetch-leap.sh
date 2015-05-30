@@ -1,0 +1,1 @@
+wget ftp://time.nist.gov/pub/leap-seconds.list

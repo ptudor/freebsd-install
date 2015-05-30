@@ -1,0 +1,4 @@
+proc           /proc       procfs  rw  0   0
+#This OpenJDK implementation requires fdescfs(5) mounted on /dev/fd and
+#procfs(5) mounted on /proc.
+fdesc	/dev/fd		fdescfs		rw	0	0

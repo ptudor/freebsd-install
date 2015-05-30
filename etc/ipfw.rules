@@ -1,0 +1,100 @@
+# v1.0.3 20121010 ptudor,ptudor.net
+#
+cmd="ipfw -q add"
+ipfw -q -f flush
+
+ks="keep-state"
+
+#loopback
+$cmd 10 allow all from any to any via lo0
+$cmd 20 deny all from any to 127.0.0.0/8
+$cmd 30 deny all from 127.0.0.0/8 to any
+$cmd 40 deny tcp from any to any frag
+# stateful
+$cmd 50 check-state
+$cmd 60 allow tcp from any to any established
+$cmd 70 allow all from any to any out keep-state
+$cmd 80 allow icmp from any to any
+$cmd 81 allow ipv6-icmp from any to any
+$cmd 82 unreach port udp from any to any 33434-33600
+$cmd 93 reset tcp from any to any 23 setup
+$cmd 95 reset tcp from any to any 113 setup
+
+# let outbound traffic that's not spoofed just go
+$cmd 100 allow ip from 172.16.0.0/12 to any out
+$cmd 101 allow ipv6 from 2001:470:ea22::/48 to any out
+$cmd 102 allow ip from 69.197.191.248/29 to any out
+$cmd 103 allow ipv6 from 2604:4300:a:73::/64 to any out
+
+#$cmd 501 fwd 127.0.0.25,25 tcp from any to any 25 in
+#$cmd 502 fwd 127.0.0.25,587 tcp from any to any 587 in
+
+$cmd 1001 allow log esp from any to any
+$cmd 1002 allow log ah from any to any
+$cmd 1003 allow log ipencap from any to any
+$cmd 1004 allow log udp from any 500 to any
+
+# services
+$cmd 9067 allow udp from any 68 to 192.168.0.0/16 67 out keep-state
+$cmd 9068 allow udp from 192.168.0.0/16 67 to any 68 in keep-state
+
+#ftp
+#$cmd 21110 allow tcp from any to any 21 in $ks
+#$cmd 21120 allow tcp from any to any 21 out $ks
+
+#ssh
+$cmd 21138 allow tcp from 76.175.71.73 to any 222 in $ks
+$cmd 21139 allow tcp from 2605:e000:1521:73::/64 to any 222 in $ks
+$cmd 21140 allow tcp from any to any 22 in $ks
+$cmd 21141 allow tcp from any to any 22 out $ks
+
+#smtp
+$cmd 21150 allow tcp from any to any 25 in $ks
+$cmd 21150 allow tcp from any to any 587 in $ks
+$cmd 21150 allow tcp from any to any 993 in $ks
+$cmd 21160 allow tcp from any to any 25 out $ks
+
+#dns
+$cmd 21169 allow tcp from 2605:e000:5481:eb00::/56 to any 53443 in $ks
+$cmd 21170 allow udp from any to any 53 in $ks
+$cmd 21171 allow udp from any to any 5353 in $ks
+$cmd 21175 allow tcp from any to any 53 in $ks
+$cmd 21180 allow udp from any to any 53 out $ks
+$cmd 21181 allow udp from any to any 5353 out $ks
+$cmd 21185 allow tcp from any to any 53 out $ks
+
+# snmp
+#$cmd 21191 allow udp from 192.168.0.0/16 to any 161 in $ks
+#$cmd 21192 allow udp from 2001:470:ea22::/48 to any 161 in $ks
+
+#http
+$cmd 21199 deny tcp from 174.47.106.254 to any dst-port 443 in
+$cmd 21200 allow tcp from any to any 80 in $ks
+$cmd 21201 allow tcp from any to any 443 in $ks
+#$cmd 21202 allow tcp from any to any 3128 in $ks
+$cmd 21210 allow tcp from any to any 80 out 
+$cmd 21211 allow tcp from any to any 443 out
+#$cmd 21212 allow tcp from any to any 3128 out 
+
+#ntp
+$cmd 21240 allow udp from any to any 123 in $ks
+$cmd 21250 allow udp from any to any 123 out $ks
+
+# zabbix
+$cmd 22049 deny tcp from 174.47.106.254 to any dst-port 10050 in
+$cmd 22050 allow tcp from 10.20.30.40 to any dst-port 10050 in
+$cmd 22051 allow tcp from 74.122.197.112/29 to any dst-port 10051 in
+#$cmd 22260 allow tcp from 192.168.0.0/20 to any 10050 in $ks
+#$cmd 22261 allow tcp from 192.168.96.0/20 to any 10050 in $ks
+#$cmd 22262 allow tcp from 2001:470:ea22::/48 to any 10050 in $ks
+
+# public mosh
+$cmd 24110 allow udp from any to any 60000-61000 in $ks
+
+# let outbound traffic that's not spoofed just go
+#$cmd 50100 allow ip from 192.168.0.0/16 to any out keep-state
+#$cmd 50101 allow ipv6 from 2001:470:ea22::/48 to any out keep-state
+# ndb uses random high tcp ports
+#$cmd 60666 allow all from any to any out keep-state
+# deny log
+$cmd 65001 deny log all from any to any

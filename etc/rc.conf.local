@@ -1,0 +1,110 @@
+# Set dumpdev to "AUTO" to enable crash dumps, "NO" to disable
+dumpdev="NO"
+keyrate="fast"
+keymap=us
+
+zfs_enable="YES"
+#sshd_enable="NO"
+# port 222
+sshd_enable="YES"
+# port 22
+openssh_enable="YES"
+unbound_enable="YES"
+
+apache22_enable="YES"
+zabbix_agentd_enable="YES"
+smartd_enable="YES"
+rsyncd_enable="YES"
+####gnome_enable="YES"
+# dbus and hald required for X
+hald_enable="YES"
+dbus_enable="YES"
+# ptudor
+bsnmpd_enable="YES"
+
+ntpdate_enable="YES"
+ntpdate_flags="north-america.pool.ntp.org"
+ntpd_enable="YES"
+ntpd_program="/usr/local/sbin/ntpd"
+
+avahi_daemon_enable="YES"
+
+# this removes the "-s" from the defaults to accept remote messages
+syslogd_flags=""
+ 
+powerd_enable="YES"
+powerd_flags="-a adaptive -b adaptive -n adaptive"
+#per http://wiki.freebsd.org/TuningPowerConsumption
+performance_cx_lowest="C2"
+economy_cx_lowest="C2"
+
+## sendmail relay
+sendmail_enable="YES"
+
+# chown squid /var/squid/cache/squid
+#squid_enable=YES
+mountd_enable=YES
+nfs_server_enable="YES"
+
+## nfs
+# per  http://www.freebsd.org/doc/handbook/network-nfs.html
+nfs_client_enable="YES"
+rpc_lockd_enable="YES"
+rpc_statd_enable="YES"
+
+mysql_enable=YES
+zabbix_server_enable=YES
+php_fpm_enable=YES
+
+# pkg_add -r gnome2
+# pkg_add -r gnome2-fifth-toe gnome2-hacker-tools gnome2-power-tools
+# pkg_add -r sawfish webfonts ;  fc-cache -f -v
+# portmaster x11/gnome2 x11/gnome2-fifth-toe devel/gnome2-hacker-tools x11/gnome2-power-tools
+
+# xorg.conf:
+#Load   "freetype"
+#Load    "type1"
+#FontPath "/usr/local/lib/X11/fonts/webfonts/"
+
+#gnome_enable="YES"
+
+courier_imap_imapd_ssl_enable="YES"
+courier_authdaemond_enable="YES"
+
+nsd_enable="YES"
+#relayd_enable="YES"
+nginx_enable="YES"
+
+##openfire_enable="YES"
+sendmail_enable="NONE"
+
+spamd_enable="YES"
+#Security Note:  If you did NOT deselected AS_ROOT, spamd will be running
+#as root. To change this, also add this to rc.conf:
+spamd_flags="-v -u vpopmail -H /var/spool/spamd"
+
+#qmailsmtpd587_enable="YES"
+#qmailsmtpd587v6_enable="YES"
+
+#In order to run the LDAP server, you need to edit
+#  /usr/local/etc/openldap/slapd.conf
+#to suit your needs and add the following lines to /etc/rc.conf:
+slapd_enable="YES"
+slapd_flags='-h "ldapi://%2fvar%2frun%2fopenldap%2fldapi/ ldap://0.0.0.0/"'
+slapd_sockets="/var/run/openldap/ldapi"
+
+named_program="/usr/local/sbin/named"
+#named_enable="YES"
+named_chrootdir=""
+
+memcached_enable="YES"
+memcached_flags="-m 96 -c 2048"
+#memcached_flags="-l 127.0.0.1 -m 96 -c 2048"
+
+saslauthd_enable="YES"
+
+postgresql_class="postgres"
+
+redis_enable="YES"
+
+dictd_enable="YES"

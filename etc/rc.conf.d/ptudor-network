@@ -1,0 +1,27 @@
+hostname="fourcom.packetexport.com"
+ifconfig_em0="up"
+ifconfig_em1="up"
+cloned_interfaces="lagg0"
+ifconfig_lagg0="laggproto failover laggport em0 laggport em1"
+ipv4_addrs_lagg0="172.19.1.226/24 172.19.1.123/32"
+ipv4_addrs_lo0="127.0.0.1/8 127.0.0.25/8 127.0.0.53/8 127.0.1.80/8 127.0.2.80/8 127.0.3.80/8"
+defaultrouter="172.19.1.254"
+
+#ipv6_enable="YES"
+ipv6_activate_all_interfaces="YES"
+ifconfig_lagg0_ipv6="inet6 2605:e000:1521:73::ffff prefixlen 64"
+ifconfig_lagg0_alias0="inet6 2605:e000:1521:73::123 prefixlen 64"
+ifconfig_lagg0_alias1="inet6 2605:e000:1521:73:1c3:1c3:bab:eee prefixlen 64"
+#ipv6_defaultrouter="2604:4300:a:73::1"
+
+gif_interfaces="gif0"
+
+static_routes="net1 net2 net3"
+route_net1="-net 10.0.0.0/8 127.0.0.1"
+route_net2="-net 172.16.0.0/12 127.0.0.1"
+route_net3="-net 192.168.0.0/16 127.0.0.1"
+
+firewall_enable="YES" 
+firewall_script="YES" 
+firewall_script="/etc/ipfw.rules"
+
