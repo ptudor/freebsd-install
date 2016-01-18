@@ -30,7 +30,7 @@ zfs set compression=off zroot/var/portbuild
 
 #### Update the OS and fetch ports
 ```bash
-/usr/libexec/locate.updatedb &
+cp /dev/null /etc/motd && /usr/libexec/locate.updatedb &
 freebsd-update fetch && freebsd-update install && \
 portsnap fetch && portsnap extract && \
 cd /usr/ports/ports-mgmt/portmaster/ && make install clean 
@@ -44,11 +44,26 @@ portmaster security/openssl security/openssh-portable
 portmaster security/gnutls security/polarssl security/wolfssl \
   security/sudo shells/bash sysutils/tmux net/mosh sysutils/coreutils
 ```
+Since we're running openssh from ports on 22, run base on port 222 and firewall.
+```bash
+sed -i -e "s/^#Port 22/Port 222/g" /etc/ssh/sshd_config && \
+sed -i -e "s/^#ChallengeResponseAuthentication yes/ChallengeResponseAuthentication no/g" /etc/ssh/sshd_config && \
+sed -i -e "s/^#ChallengeResponseAuthentication yes/ChallengeResponseAuthentication no/g" /usr/local/etc/ssh/sshd_config 
+cat <<EOF >> /usr/local/etc/ssh/ssh_config
+Host *
+  ControlMaster auto
+  ControlPath /tmp/ssh-%u@%L-%r@%h-%p
+  ForwardX11 yes
+  VerifyHostKeyDNS yes
+EOF
+
+```
+ChallengeResponseAuthentication
 
 We'll probably do something with DNS or HTTP.
 ```bash
 portmaster dns/unbound dns/nsd net/rsync net/ntp-devel www/nginx-devel dns/ldns
-/usr/local/sbin/unbound-anchor
+/usr/local/sbin/unbound-anchor && /usr/local/sbin/unbound-control-setup
 ```
 
 Drop in some more packages.
